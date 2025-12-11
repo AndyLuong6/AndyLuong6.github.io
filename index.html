@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photo Gallery</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>My Gallery</h1>
+  </header>  <main class="gallery">
+    <!-- Add your images to the photos folder and reference them here -->
+    <img src="photos/photo1.jpg" alt="" />
+    <img src="photos/photo2.jpg" alt="" />
+    <img src="photos/photo3.jpg" alt="" />
+    <img src="photos/photo4.jpg" alt="" />
+    <img src="photos/photo5.jpg" alt="" />
+  </main>
+  <script>
+    // --- AUTO‑LOAD IMAGES FROM GITHUB PHOTOS FOLDER ---
+    // Replace YOUR_USERNAME and YOUR_REPO with your actual values
+    const username = "AndyLuong6";
+    const repo = `${username}.github.io`;
+    const photosFolder = "photos";
+    const gallery = document.querySelector(".gallery");async function loadImages() {
+  const apiURL = `https://api.github.com/repos/${username}/${repo}/contents/${photosFolder}`;
+  try {
+    const response = await fetch(apiURL);
+    const data = await response.json();
+
+    data.forEach(file => {
+      if (file.name.match(/.(jpg|jpeg|png|webp|gif)$/i)) {
+        const img = document.createElement("img");
+        img.src = `${photosFolder}/${file.name}`;
+        img.alt = "";
+        gallery.appendChild(img);
+      }
+    });
+  } catch (e) {
+    console.error("Failed to load images", e);
+  }
+}
+
+loadImages();
+
+  </script>
+</body>
+</html><!-- styles.css --><style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #fff;
+    color: #000;
+  }
+
+  header {
+    text-align: center;
+    padding: 30px 0;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 400;
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .gallery img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+</style>
